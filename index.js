@@ -18,10 +18,24 @@ app.get("/", async(req, res) => {
 });
 
 app.post("/ins", async (req, res) => {
-  const newUser = req.body;
-  await Pessoa.create(newUser);
+  const {name, age} = req.body;
+  const newUser = await Pessoa.create({name, age});
 
   res.status(201).json(newUser);
+});
+app.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name, age } = req.body;
+
+  await Pessoa.findByIdAndUpdate(id, {name, age});
+
+  res.sendStatus(204);
+});
+app.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  await Pessoa.findByIdAndDelete(id);
+
+  res.sendStatus(204);
 });
 
 app.listen(port, () => console.log(`🚀 Meu site http://localhost:${port}`));
